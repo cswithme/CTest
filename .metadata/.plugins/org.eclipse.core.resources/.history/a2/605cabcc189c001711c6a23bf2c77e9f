@@ -1,0 +1,53 @@
+/*
+ * main.cpp
+ * C语言文件操作
+ *  Created on: 2017-9-18
+ *      Author: root
+ */
+
+/*
+ * return 读出字节数,-1 Error!
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int fileRead(const char *szFileName, unsigned char *ucReadBuff, unsigned long ulReadBuffCnt)
+{
+	FILE * fp = NULL;
+
+	//xxx 不使用rb模式打开,fread读出换行符页不受影响
+	fp = fopen (szFileName, "r");
+
+	if (fp == NULL)
+	{
+		puts("Open file Fail");
+		return -1;
+	}
+
+	if (fseek(fp, 0, SEEK_SET) != 0)
+	{
+		puts("fseek(fp, 2, SEEK_SET) != 0");
+		return -1;
+	}
+
+	size_t iReadCnt = fread((void *)ucReadBuff, sizeof(unsigned char), ulReadBuffCnt, fp);
+	printf("Read %u Bytes: ", iReadCnt);
+	for(size_t iCnt=0; iCnt < iReadCnt; ++iCnt)
+	{
+		printf("%02X  ",ucTemp[iCnt]);
+	}
+	putchar('\n');
+
+	return 666;
+}
+
+int main()
+{
+
+	unsigned char ucReadBuff[1024] = {0};
+
+	int iReadCnt = fileRead("/home/PRM.0103.0354.000001", ucReadBuff, sizeof(ucReadBuff));
+
+}
+
