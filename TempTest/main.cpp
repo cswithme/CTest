@@ -3,6 +3,8 @@
 #include <iostream>
 #include "TypeDef.h"
 
+/*egit*/
+
 int main()
 {
 	puts("Test Begin!");
