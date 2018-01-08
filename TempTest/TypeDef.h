@@ -8,6 +8,7 @@
 #ifndef TYPEDEF_H_
 #define TYPEDEF_H_
 
+
 #pragma pack(push,1)
 typedef struct _ST_GS_TPU_YPT_CVT_UDDATA_ {
 	unsigned char ucRundate[4]; //运营日期	Date	4
@@ -44,4 +45,107 @@ typedef struct _ST_GS_TPU_YPT_CVT_UDDATA_ {
 	unsigned char ucReversed[8]; //[保留]	Block	8
 } ST_GS_TPU_YPT_CVT_UDDATA;
 #pragma pack(pop)
+
+typedef struct _ST_HM_ABNORMAL_AND_STATUS_INFO_
+{
+	//D0
+	unsigned char bitIsResetSend :1;							//0——非复位完成后发送,1——复位完成后发送
+	unsigned char bitElectricMachineryFault:1;					//1——电机升降故障（不可恢复）
+	unsigned char bitTicketTravelingFault:1;					//1——走票故障（不可恢复）
+	unsigned char bitElectromagnetFault:1;						//1——电磁铁到位异常（不可恢复）
+	unsigned char bitRadioSensorFault:1;						//1——对射传感器故障（可恢复）
+	unsigned char bitInvalidTicketBoxFault:1;					//1——废票箱异常（可恢复）
+	unsigned char bitTicketBoxReadyAbnormal :1;					//1——发票箱就绪异常（可恢复）
+	unsigned char bitDeviceStatus :1;							//0——设备无故障,1——设备故障
+
+	//D1
+	unsigned char bitTicketBox1LiftInPlace :1;					//1——票箱1升降到位
+	unsigned char bitTicketBox1ReadId :1;						//1——票箱1电子ID读到
+	unsigned char bitTicketBox1CoverPlateInPlace :1;			//1——票箱1盖板到位
+	unsigned char bitTicketBox1AvailableSale :1;				//1——票箱1可发票
+	unsigned char bitTicketBox2LiftInPlace :1;					//1——票箱2升降到位
+	unsigned char bitTicketBox2ReadId :1;						//1——票箱2电子ID读到
+	unsigned char bitTicketBox2CoverPlateInPlace :1;			//1——票箱2盖板到位
+	unsigned char bitTicketBox2AvailableSale :1;				//1——票箱2可发票
+
+	//D2
+	unsigned char bitReserved1 :1;								//预留
+	unsigned char bitElectricMachineryEnableBit :1;				//1——电机使能位
+	unsigned char bitSaleTicketEnableBit :1;					//1——发票使能位
+	unsigned char bitTemporaryHaveTicket :1;					//1——暂存有票
+	unsigned char bitReadCardAreaHaveTicket :1;					//1——读卡区有票
+	unsigned char bitTicketBox1IsWorkBox :1;					//1——票箱1为工作票箱
+	unsigned char bitTicketBox2IsWorkBox :1;					//1——票箱2为工作票箱
+	unsigned char bitCompleteMachineNoPlace :1;					//1——整个机构不到位,0——整个机构到位
+
+	//D3
+	unsigned char bitTicketBox1OpenUpperCover :1;				//1——票箱1盖板打开
+	unsigned char bitTicketBox1UpperLimitSensorHaveSignal :1;	//1——票箱1上限传感器有信号
+	unsigned char bitTicketBox1MicroSwitchHaveSignal :1;		//1——票箱1微动开关有信号
+	unsigned char bitTicketBox1EndSensorHaveSignal :1;			//1——票箱1将完传感器有信号
+	unsigned char bitTicketBox1CountSensorHaveSignal :1;		//1——票箱1计数传感器有信号
+	unsigned char bitTicketBox1LowerLimitSensorHaveSignal :1;	//1——票箱1下限传感器有信号
+	unsigned char bitTicketBox1ToggleSwitchPosition :1;			//1——票箱1拨动开关在下位,0——票箱1拨动开关在上位
+	unsigned char bitReserved2 :1;								//预留
+
+	//D4
+	unsigned char ucTicketBox1ElectromagnetSwitchCount;			//票箱1计数磁性开关计数值
+
+	//D5
+	unsigned char bitTicketBox2OpenUpperCover :1;				//1——票箱2盖板打开
+	unsigned char bitTicketBox2UpperLimitSensorHaveSignal :1;	//1——票箱2上限传感器有信号
+	unsigned char bitTicketBox2MicroSwitchHaveSignal :1;		//1——票箱2微动开关有信号
+	unsigned char bitTicketBox2EndSensorHaveSignal :1;			//1——票箱2将完传感器有信号
+	unsigned char bitTicketBox2CountSensorHaveSignal :1;		//1——票箱2计数传感器有信号
+	unsigned char bitTicketBox2LowerLimitSensorHaveSignal :1;	//1——票箱2下限传感器有信号
+	unsigned char bitTicketBox2ToggleSwitchPosition :1;			//1——票箱2拨动开关在下位,0——票箱1拨动开关在上位
+	unsigned char bitReserved3 :1;								//预留
+
+	//D6
+	unsigned char ucTicketBox2ElectromagnetSwitchCount;			//票箱2计数磁性开关计数值
+
+	//D7
+	unsigned char bitReserved4 :1;								//预留
+	unsigned char bitInvalidTicketBoxReadId :1;					//1——废票箱电子ID读到
+	unsigned char bitInvalidTicketBoxCoverPlateInPlace :1;		//1——废票箱盖板到位
+	unsigned char bitInvalidTicketBoxNotFull :1;				//1——废票箱未满
+	unsigned char bitReserved5 :1;								//预留
+	unsigned char bitReserved6 :1;								//预留
+	unsigned char bitTurningPlateElectromagneticInPlace :1;		//1——废票翻板电磁铁到位
+	unsigned char bitReserved7 :1;								//预留
+
+	//D8
+	unsigned char bitINFS1 :1;								//1——1号INFS遮挡
+	unsigned char bitINFS2 :1;								//1——2号INFS遮挡
+	unsigned char bitINFS3 :1;								//1——3号INFS遮挡
+	unsigned char bitINFS4 :1;								//1——4号INFS遮挡
+	unsigned char bitINFS5 :1;								//1——5号INFS遮挡
+	unsigned char bitINFS6 :1;								//1——6号INFS遮挡
+	unsigned char bitTicketBox1IsEmpty :1;					//1——票箱1空,0——票箱1不空或未就绪而无法判断
+	unsigned char bitTicketBox2IsEmpty :1;					//1——票箱2空,0——票箱1不空或未就绪而无法判断
+
+	//D9
+	unsigned char bitTicketBox1ScratchTicketFault :1;		//1——票箱1刮票故障
+	unsigned char bitTicketBox2ScratchTicketFault :1;		//1——票箱2刮票故障
+	unsigned char bitTemporaryStorageAreaOnTicketFault :1;		//1——暂存区上票故障
+	unsigned char bitReadCardAreaOnTicketFault :1;			//1——读卡区上票故障
+	unsigned char bitReadCardAreaOutTicketFault :1;			//1——读卡区出票故障
+	unsigned char bitReadCardAreaRefundTicketFault :1;		//1——读卡区退票故障
+	unsigned char bitReserved8 :1;								//预留
+	unsigned char bitReserved9 :1;								//预留
+
+	//D10	走票故障位置代码
+	unsigned char ucTicketTravelingFaultCode;				//走票故障位置代码
+
+	//D11
+	unsigned char bitTicketBox1ElectricMachineryDropFault :1;		//1——票箱1电机下降故障
+	unsigned char bitTicketBox1ElectricMachineryRiseFault :1;		//1——票箱1电机上升故障
+	unsigned char bitTicketBox2ElectricMachineryDropFault :1;		//1——票箱2电机下降故障
+	unsigned char bitTicketBox2ElectricMachineryRiseFault :1;		//1——票箱2电机上升故障
+	unsigned char bitReserved10 :1;								//预留
+	unsigned char bitReserved11 :1;								//预留
+	unsigned char bitReserved12 :1;								//预留
+	unsigned char bitReserved13 :1;								//预留
+
+}ST_HM_ABNORMAL_AND_STATUS_INFO;
 #endif /* TYPEDEF_H_ */

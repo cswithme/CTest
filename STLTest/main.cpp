@@ -6,11 +6,13 @@
  */
 
 void bitSetTest(unsigned int uiBitVal);
-
+void vectorTest();
+void MapTestFunc();
 
 int main()
 {
-	bitSetTest(0xe0f0);
-
+//	bitSetTest(0xe0f0);
+//	vectorTest();
+	MapTestFunc();
 	return 0;
 }
