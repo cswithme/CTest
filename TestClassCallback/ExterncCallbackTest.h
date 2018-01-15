@@ -21,8 +21,9 @@ class CTest
 {
 public:
 	int Init();
-	void CallBackFunc(int iRet); //错误的实现方式
-//	static void CallBackFunc(int iRet); //正确的实现方式
+private:
+//	void CallBackFunc(int iRet); //错误的实现方式
+	static void CallBackFunc(int iRet); //正确的实现方式
 };
 
 

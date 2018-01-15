@@ -8,6 +8,23 @@
 #ifndef TYPEDEF_H_
 #define TYPEDEF_H_
 
+#include <stdint.h>
+
+enum struct IobCzGateErrorCode : uint8_t
+{
+	success = 0,			//成功
+	initFail = 2,			//设备连接初始化失败
+	commandFail = 3,		//设备命令执行失败
+	invalidParam = 4,		//设备命令参数非法
+	notInitialized = 5,		//设备尚未初始化
+};
+
+enum class ES_COLOR
+{
+	red = 1,
+	blue = 2,
+	green = 3,
+};
 
 #pragma pack(push,1)
 typedef struct _ST_GS_TPU_YPT_CVT_UDDATA_ {
