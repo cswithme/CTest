@@ -27,6 +27,13 @@ void MapTestFunc()
 	mapStu.insert(make_pair(3,stStu[3]));
 	mapStu.insert(make_pair(2,stStu[2]));
 
+	//map::insert 插入单条 返回值测试
+//	pair<map<int,ST_STUDENT>::iterator, bool> ret;
+//	ret = mapStu.insert(make_pair(4,stStu[3]));
+//	printf("mapStu.insert(make_pair(4,stStu[3])) %s\n", ret.second? "true": "false");
+//	ret = mapStu.insert(make_pair(3,stStu[3]));
+//	printf("mapStu.insert(make_pair(4,stStu[3])) %s\n", ret.second? "true": "false");
+
 	map<int,ST_STUDENT>::iterator itMapStu;
 
 	ST_STUDENT stTemp = {666,"Bbz"};
