@@ -11,6 +11,7 @@ typedef unsigned int DWORD;
 
 //0xba
 #define MAKEWORD(a, b)      ((WORD)(((BYTE)((DWORD)(a) & 0xff)) | ((WORD)((BYTE)((DWORD)(b) & 0xff))) << 8))
+#define PRINTINTVALUE(value)  printf(#value"[%d]\n", value);
 
 void sigCallFunc(int iSig)
 {
@@ -31,7 +32,21 @@ void (*signal(int iSig, void (*func)(int)))(int)
 int main()
 {
 	puts("Test Begin!");
-	signal(233,sigCallFunc);
+
+	//用宏定义实现字符串
+//	int iTest = 123666;
+//	PRINTINTVALUE(iTest);
+
+	//字符串中用十六进制的ASCII码表示字符的方法
+//	const char *pszTest = "\x41\x42\x43\x25";
+//	puts(pszTest);
+//	printf("%02X,%02X,%02X,%02X,%02X\n",pszTest[0], pszTest[1], pszTest[2], pszTest[3], pszTest[4]);
+//	printf("%% is \x25\x25 \n");
+
+	int i = 010;
+	printf("i=%#x\n", i);
+
+//	signal(233,sigCallFunc);
 
 
 //    success = 0,			//成功
@@ -86,10 +101,10 @@ int main()
 //	putchar('\n');
 
 
-	ST_HM_ABNORMAL_AND_STATUS_INFO stTemp;
-	printf("sizeof ST_HM_ABNORMAL_AND_STATUS_INFO is %u\n", sizeof(ST_HM_ABNORMAL_AND_STATUS_INFO));
-	printf("stTemp<%p>, stTemp+1<%p>\n", &stTemp, &stTemp+1);
-	printf("stTemp<%p>, (char*)stTemp+1<%p>\n", &stTemp, (char *)(&stTemp)+1);
+//	ST_HM_ABNORMAL_AND_STATUS_INFO stTemp;
+//	printf("sizeof ST_HM_ABNORMAL_AND_STATUS_INFO is %u\n", sizeof(ST_HM_ABNORMAL_AND_STATUS_INFO));
+//	printf("stTemp<%p>, stTemp+1<%p>\n", &stTemp, &stTemp+1);
+//	printf("stTemp<%p>, (char*)stTemp+1<%p>\n", &stTemp, (char *)(&stTemp)+1);
 
 	puts("Test end!");
 	return 0;

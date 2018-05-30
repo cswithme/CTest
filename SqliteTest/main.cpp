@@ -15,6 +15,8 @@ int main()
 {
 	puts("Test begin!");
 
+	int iRet = SQLITE_OK;
+
 	PubSleDb *m_pDb = new PubSleDb;
 
 	if(m_pDb == NULL )	puts("PubSleDb实例创建失败！");
@@ -40,7 +42,7 @@ int main()
 			"123", "123", "123", "123", "123",
 			"123", "123", "123", "123", "123",
 			"123", "123", "123", "strftime('%Y%m%d%H%M%S','now','localtime')" );
-	int iRet = m_pDb->Execute(szSql, szError);
+//	iRet = m_pDb->Execute(szSql, szError);
 
 	if(SQLITE_OK != iRet)
 	{
@@ -50,7 +52,7 @@ int main()
 	puts("插入成功！");
 
 
-//	sleep(2);
+//	sleep(10);
 
 	//执行查询 获取表
 	memset(szSql, 0, sizeof(szSql));
@@ -81,7 +83,7 @@ int main()
 	}
 
 	putchar('\n');
-	for(int iRowCnt=1; iRowCnt<iRow; ++iRowCnt)
+	for(int iRowCnt=0; iRowCnt<iRow; ++iRowCnt)
 	{
 		printf("Row[%d]: ", iRowCnt);
 		for(int iColumnCnt=0; iColumnCnt<iColumn; ++iColumnCnt)
