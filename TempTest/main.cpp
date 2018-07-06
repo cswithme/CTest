@@ -43,8 +43,11 @@ int main()
 //	printf("%02X,%02X,%02X,%02X,%02X\n",pszTest[0], pszTest[1], pszTest[2], pszTest[3], pszTest[4]);
 //	printf("%% is \x25\x25 \n");
 
-	int i = 010;
-	printf("i=%#x\n", i);
+	printf("i[%03d]\n", 12);
+
+	printf("sizeof char *[%u]\n", sizeof(char *));
+	const char *pucArry[20];
+	printf("sizeof pucArry [%u]\n", sizeof(pucArry));
 
 //	signal(233,sigCallFunc);
 

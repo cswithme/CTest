@@ -30,19 +30,26 @@ int main()
 	memset(szSql, 0, sizeof(szSql));
 	memset(szError, 0, sizeof(szError));
 
-	sprintf(szSql, "INSERT INTO check_tickets_trans"
+
+	sprintf(szSql, " INSERT INTO check_tickets_trans"
 			"(itpUserId, trxType, issueChannelCode, signChannelCode, cardId, "
 			"cardType, handleDateTime, handleStationCode, trxAmount, overtimeAmount, "
 			"lastTicketStatus, handleResultCode, lastHandleStationCode, lastHandleDateTime,tikcetTransSeq,"
 			"reserve1, reserve2, need_retransmission, DEAL_DATETIME)"
 			"VALUES"
 			"(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, "
-			"%s, %s, 1, %s);",
+			"%s, %s, 1, %s); ",
 			"667", "556", "123", "123",
 			"123", "123", "123", "123", "123",
 			"123", "123", "123", "123", "123",
 			"123", "123", "123", "strftime('%Y%m%d%H%M%S','now','localtime')" );
-//	iRet = m_pDb->Execute(szSql, szError);
+
+//	m_pDb->SqlitePrepare(szSql);
+//	m_pDb->
+	for(unsigned int i=0; i<5; ++i)
+	{
+		iRet = m_pDb->Execute(szSql, szError);
+	}
 
 	if(SQLITE_OK != iRet)
 	{
@@ -63,7 +70,8 @@ int main()
 	sprintf(szSql, "select rowid, itpUserId, trxType, issueChannelCode, signChannelCode, cardId,"
 		"cardType, handleDateTime, handleStationCode, trxAmount, overtimeAmount, lastTicketStatus,"
 		"handleResultCode, lastHandleStationCode, lastHandleDateTime,tikcetTransSeq, reserve1, reserve2 "
-		"from check_tickets_trans where need_retransmission != 0 ORDER BY rowid DESC limit 10;");
+//		"from check_tickets_trans where need_retransmission != 0 ORDER BY rowid DESC limit 10;");
+		"from check_tickets_trans where need_retransmission != 0;");
 
 	iRet = m_pDb->GetTable(szSql, &ppDbResult, &iRow, &iColumn, szError);
 	printf("iRet = [%d], iRow = [%d], iColumn = [%d]\n", iRet, iRow, iColumn);
@@ -88,7 +96,7 @@ int main()
 		printf("Row[%d]: ", iRowCnt);
 		for(int iColumnCnt=0; iColumnCnt<iColumn; ++iColumnCnt)
 		{
-			printf("Column[%d] <%s>\t",iColumnCnt, ppDbResult[iRowCnt * iColumn + iColumnCnt]);
+			printf("Column[%d] <%s>\t",iColumnCnt, ppDbResult[iRowCnt * iColumn + iColumnCnt]==NULL? "NULL": ppDbResult[iRowCnt * iColumn + iColumnCnt]);
 		}
 		putchar('\n');
 	}
