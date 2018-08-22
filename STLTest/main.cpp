@@ -8,11 +8,13 @@
 void bitSetTest(unsigned int uiBitVal);
 void vectorTest();
 void MapTestFunc();
+void IteratorTest();
 
 int main()
 {
 //	bitSetTest(0xe0f0);
 //	vectorTest();
-	MapTestFunc();
+//	MapTestFunc();
+	IteratorTest();
 	return 0;
 }
