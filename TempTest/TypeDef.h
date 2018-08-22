@@ -165,4 +165,41 @@ typedef struct _ST_HM_ABNORMAL_AND_STATUS_INFO_
 	unsigned char bitReserved13 :1;								//预留
 
 }ST_HM_ABNORMAL_AND_STATUS_INFO;
+
+typedef enum
+{
+	EM_TICKET_TRANS_RESULT_OK = 0,		//OK,预读OK,有效性检查OK
+	EM_TICKET_TRANS_RESULT_EXPIRED = 1,		//车票过期
+	EM_TICKET_TRANS_RESULT_OUTSIDE = 2,		//区段外车票
+	EM_TICKET_TRANS_RESULT_INSUFFICIENT_BALANCE = 3,		//余额/余次不足
+	EM_TICKET_TRANS_RESULT_OVERTIME = 4,		//超过滞留时间
+	EM_TICKET_TRANS_RESULT_DATA_ERROR = 5,		//车票数据无效
+	EM_TICKET_TRANS_RESULT_BKACKLIST = 6,		//黑名单车票
+	EM_TICKET_TRANS_RESULT_RW_FAILTRUE = 7,		//车票读写失败
+	EM_TICKET_TRANS_RESULT_TYPE_INVALID = 8,		//车票类型不能进行当前业务
+	EM_TICKET_TRANS_RESULT_MULTI_TICKETS = 9,		//多张车票
+	EM_TICKET_TRANS_RESULT_PLEASE_INPUT_CARD = 10, //请投入车票：用于AGM根据物理卡类型进行提示
+	EM_TICKET_TRANS_RESULT_PLEASE_SWIPE_CARD = 11, //请刷卡：用于AGM根据物理卡类型进行提示
+	EM_TICKET_TRANS_RESULT_CARD_MOVED = 12, //闪卡,请重新放卡
+	EM_TICKET_TRANS_RESULT_OTHER_ERROR = 0xFF,		//其他错误
+}EM_TICKET_TRANS_RESULT;
+
+typedef enum
+{
+	EM_CARD_USED_WAY_WITHDRAW = 0x01, //出站投入(回收)
+	EM_CARD_USED_WAY_NON_WITHDRAW = 0x02, //出站刷卡
+	EM_CARD_USED_WAY_UNKNOWN = 0xFF, //未知
+}EM_CARD_USED_WAY;
+
+typedef struct _ST_POLLING_CARD_INFO_CSS_
+{
+	EM_TICKET_TRANS_RESULT emPollResult;	//寻卡结果
+	EM_CARD_USED_WAY emCardUsedWay;			//卡片使用方式_出站刷卡或投入(回收),仅AG有效，TVM、BOM忽略
+	int iCardPhyType;						//卡物理类型
+	char szPhyCardNo[21];					//物理卡号
+	int iAntennaMark;						//寻卡天线标志：	1：表示天线A寻到卡片；	2：表示天线B寻到卡片；4：表示天线C寻到卡片。
+	unsigned int uiUdSeqKey;				//需要更新的UDSN 键值，由TPU 模块根据车票类型进行项目化实现，并传给数据存储模块直接保存
+	unsigned int uiSamSeqKey;				//需要更新的UDSN 键值，由TPU 模块根据车票类型进行项目化实现，并传给数据存储模块直接保存
+	unsigned char ucReverse[3];			//预留字段
+}ST_TPU_POLLING_CARD_INFO;
 #endif /* TYPEDEF_H_ */
