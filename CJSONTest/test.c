@@ -38,6 +38,61 @@ struct record
     const char *country;
 };
 
+/*
+ * 将文件中的内容读取到*buffer所指向的内容中,
+ * ppBuffer 传入 &char*, 使用完 free(char *)
+ * http://www.fundza.com/c4serious/fileIO_reading_all/4_IO_readall.c
+ */
+static int readEntireFileIntoBuf(const char *pszFilePath, char **ppBuffer, long *numbytes)
+{
+
+	/* declare a file pointer */
+	FILE    *infile;
+//	char    *buffer;
+//	long    numbytes;
+
+	/* open an existing file for reading */
+	infile = fopen(pszFilePath, "r");
+
+	/* quit if the file does not exist */
+	if(infile == NULL)
+	{
+		puts("file does not exist");
+	    return -1;
+	}
+
+	/* Get the number of bytes */
+	fseek(infile, 0L, SEEK_END);
+	*numbytes = ftell(infile);
+
+	/* reset the file position indicator to
+	the beginning of the file */
+	fseek(infile, 0L, SEEK_SET);
+
+	/* grab sufficient memory for the
+	buffer to hold the text */
+	*ppBuffer = (char*)calloc((size_t)*numbytes, sizeof(char));
+
+	/* memory error */
+	if(*ppBuffer == NULL)
+	{
+		puts("memory error");
+		return -1;
+	}
+
+
+	/* copy all the text into the buffer */
+	fread(*ppBuffer, sizeof(char), *numbytes, infile);
+	fclose(infile);
+
+	/* confirm we have read the file by
+	outputing it to the console */
+//	printf("The file called test.dat contains this text\n\n%s", buffer);
+
+	/* free the memory we used for the buffer */
+//	free(buffer);
+	return 0;
+}
 
 /* Create a bunch of objects as demonstration. */
 static int print_preallocated(cJSON *root)
@@ -256,13 +311,95 @@ static void create_objects(void)
     cJSON_Delete(root);
 }
 
+
+
+static int createFullAiuicfgcmd()
+{
+	cJSON *root = NULL;
+	cJSON *content = NULL;
+
+	int iRet = 0;
+	char *pszFileContent = NULL;
+	long numbytes = 0;
+
+	if(iRet == 0)
+	{
+		char szFilePath[100] = "/Afc/aiui.cfg";
+		if(readEntireFileIntoBuf(szFilePath, &pszFileContent, &numbytes))
+		{
+			puts("readEntireFileIntoBuf fail");
+			iRet = -1;
+		}
+	}
+
+	if(iRet == 0)
+	{
+//		printf("File Content[len=%ld]:\n%s\n", numbytes, pszFileContent);
+		content = cJSON_Parse(pszFileContent);
+		if (content == NULL)
+		{
+			const char *error_ptr = cJSON_GetErrorPtr();
+			if (error_ptr != NULL)	fprintf(stderr, "Error before: %s\n", error_ptr);
+			iRet = -1;
+		}
+	}
+
+	if(iRet == 0)
+	{
+		root = cJSON_CreateObject();
+		cJSON_AddStringToObject(root, "type", "aiui_cfg");
+		cJSON_AddItemToObject(root, "content", content);
+		cJSON_AddFalseToObject(content, "launch_demo");
+
+		char *out = cJSON_PrintUnformatted(root);
+		cJSON_Delete(root);
+
+		puts(out);
+		cJSON_free(out);
+	}
+
+	free(pszFileContent);
+	return 0;
+}
+
+static void createAiuicfgcmd()
+{
+	cJSON *root = NULL;
+	cJSON *content = NULL;
+	cJSON *login = NULL;
+
+	root = cJSON_CreateObject();
+	cJSON_AddStringToObject(root, "type", "aiui_cfg");
+	cJSON_AddItemToObject(root, "content", content = cJSON_CreateObject());
+
+	cJSON_AddFalseToObject(content, "launch_demo");
+	cJSON_AddItemToObject(content, "login", login = cJSON_CreateObject());
+
+	cJSON_AddStringToObject(login, "appid", "xxxxxxxx");
+	cJSON_AddStringToObject(login, "key", "xxxxxxxx");
+
+
+	//	print_preallocated(root);
+
+	char *out = cJSON_Print(root);
+	cJSON_Delete(root);
+
+
+	puts(out);
+	cJSON_free(out);
+
+}
+
 int main(void)
 {
     /* print the version */
     printf("Version: %s\n", cJSON_Version());
 
     /* Now some samplecode for building objects concisely: */
-    create_objects();
+//    create_objects();
+//    createAiuicfgcmd();
+
+    createFullAiuicfgcmd();
 
     return 0;
 }

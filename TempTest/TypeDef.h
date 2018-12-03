@@ -202,4 +202,97 @@ typedef struct _ST_POLLING_CARD_INFO_CSS_
 	unsigned int uiSamSeqKey;				//需要更新的UDSN 键值，由TPU 模块根据车票类型进行项目化实现，并传给数据存储模块直接保存
 	unsigned char ucReverse[3];			//预留字段
 }ST_TPU_POLLING_CARD_INFO;
+
+
+#pragma pack(push, 1)
+//cmd03 配置超时时间命令参数
+typedef struct _ST_TIMEOUT_PARM_
+{
+	uint8_t authTimeOut; //乘客刷卡后没有进入闸机超时关门时间 例如0x06表示6秒，可以将其变为01~1E中的任意数字
+	uint8_t reverse;	//保留
+	uint8_t leaveAsideAlarmTimeout; //乘客在通道内停留几秒后催促报警。例如0x14表示20秒，可以将其变为01~1E中的任意数字
+}ST_TIMEOUT_PARM;
+
+//cmd04
+typedef struct _ST_WORK_MODE_
+{
+    uint8_t flapForwardNormalOpen: 1;	//闸机正方向常开标志 1为正向常开
+    uint8_t flapBackwardNormalOpen: 1;	//闸机反方向常开标志 1为反向常开
+    uint8_t flapForwardDayMode: 1;		//闸机正方向开门日模式标志 1为正方向开门日模式
+    uint8_t flapBackwardDayMode: 1;		//闸机反方向开门日模式标志 1为反方向开门日模式
+    uint8_t flapForwardFreeTicket: 1;	//闸机正向免票标志 1为正向免票模式
+    uint8_t flapBackwardFreeTicket: 1;	//闸机反向免票标志 1为反向免票模式
+    uint8_t flapMaintainenceFlag: 1;	//闸机维护标志 1为维护模式
+    uint8_t reserved0: 1;
+
+    uint8_t	reserved1: 1;
+    uint8_t	forbidChiledDetect: 1;			//儿童探测模式 1为不探测儿童
+    uint8_t	tailDetectMod: 1;				//尾随距离探测模式。1为100mm尾随探测，0为150mm尾随探测
+    uint8_t reserved2: 5;
+
+    uint8_t reserved3: 8;
+
+    uint8_t reserved4: 8;
+
+    uint8_t reserved5: 8;
+}ST_WORK_MODE; //4B
+
+typedef struct _ST_KABA_ALARM_STATUS
+{
+    uint8_t forwardIntrusion:1;      //BYTE5.0正方向闯闸标志, flap not open。1为正方向闯闸，0为正方向不闯闸。
+    uint8_t backwardIntrusion:1;      //BYTE5.1反方向闯闸标志, flap not open。1为反方向闯闸，0为反方向不闯闸。
+    uint8_t forwardTailing:1;      //BYTE5.2正方向尾随标志。1为正方向尾随，0为正方向不尾随。
+    uint8_t backwardTailing:1;     //BYTE5.3反方向尾随标志。1为反方向尾随，0为反方向不尾随。
+    uint8_t forwardInverseIntrusion:1;     //BYTE5.4正方向反闯标志, flap open, 。1为正方向反闯，0为正方向不反闯。
+    uint8_t backwardInverseIntrusion:1;      //BYTE5.5反方向反闯标志,flap open,。1为反方向反闯，0为反方向不反闯。
+    uint8_t masterMaintenanceFlapClose:1;  //BYTE5.6主维护门开关标志。1为主维护门开，0为主维护门关。
+    uint8_t slaveMaintenanceFlapClose:1;  //BYTE5.7从维护门开关标志。1为从维护门开，0为从维护门关。
+
+    uint8_t gateFireWarningFlap:1;//BYTE6.0闸机火警标志。1为闸机火警，0为闸机不火警。
+    uint8_t manInGateTooLongWaring:1;//BYTE6.1乘客长时间停留闸机报警标志。1为报警，0为不报警。
+    uint8_t reserved6_2_7:6;//BYTE6.2~ BYTE6.7保留。
+
+    uint8_t reserved7;
+
+    uint8_t reserved8;
+}ST_KABA_ALARM_STATUS;
+
+typedef struct _ST_KABA_CZ_SENSOR_STATUS_
+{
+    ////BYTE9
+    uint8_t optocouplerS9:1; //光耦S9            IOB-IN1
+    uint8_t optocouplerS10:1;//光耦S10           IOB-IN2
+    uint8_t optocouplerT1:1;//光耦T1            IOB-IN3
+    uint8_t optocouplerT2:1;//光耦T2            IOB-IN4
+    uint8_t optocouplerS11:1;//光耦S11           IOB-IN5
+    uint8_t optocouplerS12:1;//光耦S12           IOB-IN6
+    uint8_t masterSideMaintenanceDoorSwitch:1;//主侧维护门开关     IOB-IN7
+    uint8_t slaveSideMaintenanceDoorSwitch:1;//从侧维护门开关     IOB-IN8
+
+    //BYTE10：表示IOB I9~I16输入状态。1为对应位有输入，0为对应位无输入。
+    uint8_t optocouplerS1:1;//光耦S1            IOB-IN9
+    uint8_t optocouplerS2:1;//光耦S2            IOB-IN10
+    uint8_t optocouplerS3:1;//光耦S3            IOB-IN11
+    uint8_t optocouplerS4:1;//光耦S4            IOB-IN12
+    uint8_t optocouplerS5:1;//光耦S5            IOB-IN13
+    uint8_t optocouplerS6:1;//光耦S6            IOB-IN14
+    uint8_t optocouplerS7:1;//光耦S7            IOB-IN15
+    uint8_t optocouplerS8:1;//光耦S8            IOB-IN16
+
+    uint8_t reserved11; //BYTE11：表示ETS22 I1~I8输入状态。1为对应位有输入，0为对应位无输入。
+}ST_KABA_CZ_SENSOR_STATUS;
+
+
+
+typedef struct _ST_KABA_STATUS_
+{
+    ST_WORK_MODE stWorkMode;//1-4
+    ST_KABA_ALARM_STATUS stAlarmStatus;//5-8
+    ST_KABA_CZ_SENSOR_STATUS stSensorStatus;//9-11
+    uint8_t reserved12;
+    ST_TIMEOUT_PARM stTimeoutParm; //13-15
+    uint8_t reserved16;
+}ST_KABA_STATUS;
+
+#pragma pack(pop)
 #endif /* TYPEDEF_H_ */
