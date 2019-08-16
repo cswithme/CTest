@@ -306,21 +306,37 @@ int func()
 	return 0;
 }
 
+void funcTest()
+{
+	char szTmp[] = {0x4D, 0x51, 0x39, 0x8D, 0xFA, 0x51, 0xD9, 0x7A, 0x68, 0x79, 0x00, 0x00};
+	size_t uTempLen = sizeof(szTmp);
+	char szRus[128]; memset(szRus, 0, sizeof(szRus));
+	size_t uRusLen = sizeof(szRus);
+
+	if(!CodeConvert("UCS-2", "UTF8//IGNORE", szTmp, uTempLen, szRus, &uRusLen)) {
+		puts("CodeConvert fail!");
+	}
+	else{
+		printf("CodeConvert sucess, (%s)!\n", szRus);
+	}
+}
+
 int main()
 {
-	struct timespec tsBegin,tsEnd;
-	clock_gettime(CLOCK_REALTIME, &tsBegin);
-	printf("Before Call Func: tv_sec[%ld], tv_usec[%ld](ns)\n", tsBegin.tv_sec, tsBegin.tv_nsec);
-
-	func();
-	puts("\n\nFunc2");
-	func2();
-
-	clock_gettime(CLOCK_REALTIME, &tsEnd);
-	printf("After Call Func: tv_sec[%ld], tv_usec[%ld](ns)\n", tsEnd.tv_sec, tsEnd.tv_nsec);
-
-	printf("Time spend:tv_sec[%ld], tv_usec[%ld](ns)\n", tsEnd.tv_sec-tsBegin.tv_sec,
-			tsEnd.tv_nsec-tsBegin.tv_nsec);
+	funcTest();
+//	struct timespec tsBegin,tsEnd;
+//	clock_gettime(CLOCK_REALTIME, &tsBegin);
+//	printf("Before Call Func: tv_sec[%ld], tv_usec[%ld](ns)\n", tsBegin.tv_sec, tsBegin.tv_nsec);
+//
+//	func();
+//	puts("\n\nFunc2");
+//	func2();
+//
+//	clock_gettime(CLOCK_REALTIME, &tsEnd);
+//	printf("After Call Func: tv_sec[%ld], tv_usec[%ld](ns)\n", tsEnd.tv_sec, tsEnd.tv_nsec);
+//
+//	printf("Time spend:tv_sec[%ld], tv_usec[%ld](ns)\n", tsEnd.tv_sec-tsBegin.tv_sec,
+//			tsEnd.tv_nsec-tsBegin.tv_nsec);
 
 //	char szTemp[33] = {0xC6, 0xD5, 0xCD, 0xA8, 0xB5, 0xA5, 0xB3, 0xCC, 0xC6, 0xB1, 0x20,
 //			0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,

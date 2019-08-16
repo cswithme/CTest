@@ -11,9 +11,18 @@
 #include "string.h"
 #include "unistd.h"
 
+void testClass();
+
 int main()
 {
 	puts("Test begin!");
+
+	testClass();
+
+	puts("Test end!");
+
+	return 0;
+
 
 	int iRet = SQLITE_OK;
 

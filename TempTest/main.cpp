@@ -15,64 +15,43 @@
 #include <vector>
 #include <algorithm>    // std::sort
 
-//int iTemp = printf("function call out func\n");
-
-int getValueFromStr1(const char* pszSource, const char* pszParamStr, char *szParamValue)
+uint32_t _GetMsgIDFromMsg(const char* pszMsg)
 {
-	const char* pos = strstr(pszSource, pszParamStr);
-	if(NULL == pos)	return -1;
-
-	const char* end = index(pos, '&');
-	if(NULL == end){
-		strcpy(szParamValue, pos+strlen(pszParamStr)+1);
+	//{“command”:   1001, “data”: {“xxxx”: “xxxx”}, “time”:”2019-07-11 13:15:30”, “message_id”:12345}
+	const char* szMatch = "\"message_id\":";
+	char szMsgID[16]; memset(szMsgID, 0, sizeof(szMsgID));
+	const char* pos = strstr(pszMsg, szMatch);
+	if(NULL == pos) {
+		return 0;
 	}
-	else{
-		memcpy(szParamValue, pos+strlen(pszParamStr)+1, end-pos-strlen(pszParamStr)-1);
-	}
-	return 0;
-}
 
-void getValueFromQueryStr2(const char * szQueryStr, const char * szParamName, char *szParamValue)
-{
-	using namespace std;
-	//cout<<"Query String is "<<szQueryStr<< ", paramname is " << szParamName <<endl;
-	string queryStr(szQueryStr);
-	string paramName(szParamName);
+	const char* end = index(pos, ',');
+	if(NULL == end) end = index(pos, '}');
 
-	string::size_type pos1, pos2;
-	pos2 = queryStr.find('&');
-	pos1 = 0;
-	bool breakFlag = false;
-	while (true)
-	{
-		breakFlag = string::npos == pos2;
-		string strKeyValue = "";
-		if(!breakFlag)
-			strKeyValue = queryStr.substr(pos1, pos2 - pos1);
-		else
-			strKeyValue = queryStr.substr(pos1);
-		if(!strKeyValue.compare(0,paramName.length(),paramName))
-		{
-			int beginPos = strKeyValue.find_first_of('=');
-			strKeyValue = strKeyValue.substr(beginPos+1,strKeyValue.length());
-			int endPos = strKeyValue.find_first_of('&');
-			strKeyValue = strKeyValue.substr(0,endPos);
-			memcpy(szParamValue,strKeyValue.c_str(),strKeyValue.length());
-			break ;
-		}
-		if(breakFlag)
-			break;
-		pos1 = pos2 + 1;
-		pos2 = queryStr.find('&', pos1);
-	}
+	memcpy(szMsgID, pos+strlen(szMatch), end-pos-strlen(szMatch));
+
+	uint32_t u32MsgID = strtoul(szMsgID, NULL, 10);
+	return u32MsgID;
 }
 
 int main()
 {
 	puts("Test begin!");
 
-	char szTmp[] = {0x68, 0x6C, 0x6F, 0x47, 0x53, 0x4C, 0x33, 0x35, 0x44, 0x4F, 0x5A, 0x2B, 0x61, 0x41, 0x56, 0x6D, 0x74, 0x4C, 0x45, 0x63, 0x6E, 0x61, 0x52, 0x63, 0x31, 0x42, 0x76, 0x4C, 0x4F, 0x58, 0x72, 0x51, 0x69, 0x64, 0x42, 0x57, 0x51, 0x31, 0x48, 0x45, 0x74, 0x76, 0x4D, 0x3D};
-	puts(szTmp);
+//	uint8_t psz[] = {0x02, 0x30, 0x30, 0x34, 0x38, 0x7B, 0x22, 0x63, 0x6F, 0x6D, 0x6D, 0x61, 0x6E, 0x64,
+//			0x22, 0x3A, 0x31, 0x30, 0x30, 0x31, 0x2C, 0x22, 0x64, 0x61, 0x74, 0x61, 0x22, 0x3A, 0x22, 0x7B,
+//			0x7D, 0x22, 0x2C, 0x22, 0x74, 0x69, 0x6D, 0x65, 0x22, 0x3A, 0x22, 0x32, 0x30, 0x31, 0x39, 0x2D,
+//			0x30, 0x37, 0x2D, 0x33, 0x30, 0x20, 0x31, 0x36, 0x3A, 0x31, 0x33, 0x3A, 0x32, 0x36, 0x22, 0x2C,
+//			0x22, 0x6D, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x5F, 0x69, 0x64, 0x22, 0x3A, 0x31, 0x7D, 0x42,
+//			0x33, 0x43, 0x34, 0x03};
+//
+//	printf("psz(%s)\n", psz);
+//	uint32_t u32Ret = _GetMsgIDFromMsg((const char*)psz);
+//	printf("u32Ret(%d)\n", u32Ret);
+
+	uint32_t u32Data = 600197;
+	printf("u32Data(%u)\n", u32Data);
+
 	puts("Test end!");
 
 	return 0;
