@@ -14,6 +14,7 @@
 #include <pthread.h>
 #include <vector>
 #include <algorithm>    // std::sort
+#include <arpa/inet.h>
 
 uint32_t _GetMsgIDFromMsg(const char* pszMsg)
 {
@@ -34,6 +35,11 @@ uint32_t _GetMsgIDFromMsg(const char* pszMsg)
 	return u32MsgID;
 }
 
+enum
+{
+	EM_0900 = 0x0900,
+};
+
 int main()
 {
 	puts("Test begin!");
@@ -49,8 +55,13 @@ int main()
 //	uint32_t u32Ret = _GetMsgIDFromMsg((const char*)psz);
 //	printf("u32Ret(%d)\n", u32Ret);
 
-	uint32_t u32Data = 600197;
-	printf("u32Data(%u)\n", u32Data);
+
+	uint16_t u16Data = htons(EM_0900);
+	const uint8_t *ptr = (const uint8_t *)&u16Data;
+	printf("%02X %02X\n", *ptr, *(ptr+1));
+
+	ptr = (const uint8_t *)"\x09\x00";
+	printf("%02X %02X\n", *ptr, *(ptr+1));
 
 	puts("Test end!");
 
